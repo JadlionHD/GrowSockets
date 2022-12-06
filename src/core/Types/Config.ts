@@ -43,6 +43,11 @@ export interface Config<A, B> {
   db?: B;
 
   /**
+   * Whether or not to use built-in logging.
+   */
+  log?: boolean;
+
+  /**
    * Whether or not to use Growtopia's new packet protocol.
    */
   usingNewPacket?: boolean;

@@ -24,6 +24,11 @@ class Server<A, B, C> extends EventEmitter {
   public db: B;
 
   /**
+   * Whether or not to use built-in logging.
+   */
+  private logging: boolean;
+
+  /**
    * Server internal data, use this to store anything you want.
    */
   public data: C;
@@ -38,21 +43,20 @@ class Server<A, B, C> extends EventEmitter {
         cache: new DefaultCache() as any,
         db: new DefaultDb() as any,
         usingNewPacket: false,
+        log: true
       };
 
     if (config.usingNewPacket) Wrapper.useNewPacket();
 
     if (config.http?.enabled) {
       this.log("HTTP Server Started.");
-      Http(
-        config.http.serverPort || 17091,
-        config.http.serverIP || "127.0.0.1"
-      );
+      Http(config.http.serverPort || 17091, config.http.serverIP || "127.0.0.1");
     }
 
     this.cache = config.cache;
     this.db = config.db;
     this.port = config.port ?? 17091;
+    this.logging = config.log;
   }
 
   /**
@@ -67,10 +71,7 @@ class Server<A, B, C> extends EventEmitter {
    * @param event The type of the event.
    * @param listener The callback to execute if the event is emitted.
    */
-  public on(
-    event: "data",
-    listener: (netID: number, data: Buffer) => void
-  ): this;
+  public on(event: "data", listener: (netID: number, data: Buffer) => void): this;
 
   /**
    * Listens for the `disconnect` event.
@@ -96,12 +97,7 @@ class Server<A, B, C> extends EventEmitter {
     return new Promise((resolve) => {
       const date = new Date();
 
-      resolve(
-        console.log(
-          `[${date.toDateString()} ${date.toLocaleTimeString()}] |`,
-          ...args
-        )
-      );
+      resolve(console.log(`[${date.toDateString()} ${date.toLocaleTimeString()}] |`, ...args));
     });
   }
 
@@ -112,13 +108,13 @@ class Server<A, B, C> extends EventEmitter {
     const port = this.port || 17091;
 
     Wrapper.init(port);
-    this.log("ENet Server now initiated on port.", port);
+    if (this.logging) this.log("ENet Server now initiated on port.", port);
 
     Wrapper.emitter(this.emit.bind(this));
-    this.log("Event Emitter function has now been set.");
+    if (this.logging) this.log("Event Emitter function has now been set.");
 
     Wrapper.accept();
-    this.log("Now acknowledging events.");
+    if (this.logging) this.log("Now acknowledging events.");
   }
 }
 

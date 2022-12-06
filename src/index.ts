@@ -22,5 +22,5 @@ export {
   DefaultCache,
   DefaultDb,
   // Typings
-  Types,
+  Types
 };
