@@ -25,7 +25,7 @@ void __finalizer(Napi::Env env, T* data) {
 void __init(ARG) {
   Napi::Env env     = info.Env();
 
-  std::string ipAddress = info[0].As<Napi::String>();
+  std::string ipAddress = info[0].As<Napi::String>().ToString().Utf8Value();
   unsigned int port = info[1].As<Napi::Number>().Uint32Value();
 
   if (enet_initialize() != 0)
