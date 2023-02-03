@@ -28,11 +28,6 @@ export interface Config<A, B> {
   port?: number;
 
   /**
-   * The address to use for init the server. Defaults to `0`
-   */
-  address?: string;
-
-  /**
    * The options for the HTTP server.
    */
   http?: HTTPOptions;

@@ -39,7 +39,6 @@ class Server<A, B, C> extends EventEmitter {
 
     if (!config)
       config = {
-        address: "0",
         port: 17091,
         http: {},
         cache: new DefaultCache() as any,
@@ -58,7 +57,6 @@ class Server<A, B, C> extends EventEmitter {
     this.cache = config.cache;
     this.db = config.db;
     this.port = config.port ?? 17091;
-    this.address = config.address ?? "0";
     this.logging = config.log;
   }
 
@@ -111,7 +109,7 @@ class Server<A, B, C> extends EventEmitter {
     const port = this.port || 17091;
     const address = this.address || "0";
 
-    Wrapper.init(address, port);
+    Wrapper.init(port);
     if (this.logging) this.log("ENet Server now initiated on port.", port);
 
     Wrapper.emitter(this.emit.bind(this));
