@@ -10,7 +10,7 @@ const Wrapper = {
    * @param address The address to use for the server
    * @param port The port to use for the server.
    */
-  init: (address = "0", port: number): void => native.init(port),
+  init: (address = "0", port: number): void => native.init(address, port),
 
   /**
    * Whether or not to use growtopia's new packet protocol.
