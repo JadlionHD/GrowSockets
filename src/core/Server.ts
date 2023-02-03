@@ -12,6 +12,7 @@ import { Config } from "./Types/Config";
  */
 class Server<A, B, C> extends EventEmitter {
   private port: number;
+  private address: string;
 
   /**
    * Cache object that contains functions to manipulate the cache.
@@ -38,6 +39,7 @@ class Server<A, B, C> extends EventEmitter {
 
     if (!config)
       config = {
+        address: "0",
         port: 17091,
         http: {},
         cache: new DefaultCache() as any,
@@ -56,6 +58,7 @@ class Server<A, B, C> extends EventEmitter {
     this.cache = config.cache;
     this.db = config.db;
     this.port = config.port ?? 17091;
+    this.address = config.address ?? "0";
     this.logging = config.log;
   }
 
@@ -106,8 +109,9 @@ class Server<A, B, C> extends EventEmitter {
    */
   public listen() {
     const port = this.port || 17091;
+    const address = this.address || "0";
 
-    Wrapper.init(port);
+    Wrapper.init(address, port);
     if (this.logging) this.log("ENet Server now initiated on port.", port);
 
     Wrapper.emitter(this.emit.bind(this));

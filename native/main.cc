@@ -24,13 +24,17 @@ void __finalizer(Napi::Env env, T* data) {
 
 void __init(ARG) {
   Napi::Env env     = info.Env();
-  unsigned int port = info[0].As<Napi::Number>().Uint32Value();
+
+  std::string ipAddress = info[0].As<Napi::String>();
+  unsigned int port = info[1].As<Napi::Number>().Uint32Value();
 
   if (enet_initialize() != 0)
     return Napi::Error::New(env, "ENet failed to Initialize.").ThrowAsJavaScriptException();
 
   ENetAddress address;
-  address.host = ENET_HOST_ANY;
+  enet_address_set_host(&address, ipAddress.c_str());
+
+  // address.host = ENET_HOST_ANY;
   address.port = static_cast<uint16_t>(port);
 
   host = enet_host_create(&address, 1024, 2, 0, 0);

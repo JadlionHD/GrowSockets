@@ -7,9 +7,10 @@ const native = require("../../native/build/Release/index.node");
 const Wrapper = {
   /**
    * Initiates the ENet Server.
+   * @param address The address to use for the server
    * @param port The port to use for the server.
    */
-  init: (port: number): void => native.init(port),
+  init: (address = "0", port: number): void => native.init(port),
 
   /**
    * Whether or not to use growtopia's new packet protocol.
@@ -23,8 +24,7 @@ const Wrapper = {
    * @param count The amount of packets to send.
    * @param packets The packet to send. This is not an array, but it would be the rest of the arguments.
    */
-  send: (id: number, count: number, packets: Buffer[]): void =>
-    native.send(id, count, packets),
+  send: (id: number, count: number, packets: Buffer[]): void => native.send(id, count, packets),
 
   /**
    * Accepts incoming data/connections by calling multiple "enet_host_service".
@@ -82,7 +82,7 @@ const Wrapper = {
     }
 
     return native.disconnect(netID, val);
-  },
+  }
 };
 
 export default Wrapper;
